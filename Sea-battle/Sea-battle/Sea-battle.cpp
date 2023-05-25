@@ -396,8 +396,10 @@ void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_huma
 
 int main()
 {
-	setlocale(LC_ALL, "Russian");
-
+	//SetConsoleOutputCP(CP_UTF8);
+	//setlocale(LC_ALL, "Russian");
+	
+	
 	ship Ship_human;
 	ship Ship_computer;
 
