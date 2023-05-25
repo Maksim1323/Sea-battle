@@ -418,7 +418,7 @@ int main()
 	string gemer = "Поле Игрока";
 	string gemer2 = "Поле Компьютера";
 
-	bool turn = 1; // 1 ходит человек
+	bool turn = 0; // 1 ходит человек
 
 	// заполнение массива с короблями человека
 	array_filling(Ship_human.ships_player);
@@ -451,7 +451,7 @@ int main()
 				resultshot = shot(Ship_computer.map_player, Ship_computer.mask_player, Ship_computer.ships_player, Ship_human.x, Ship_human.y);
 				if (resultshot == 2) {
 					cout << "Убил" << endl;
-					Sleep(1000);
+					//Sleep(1000);
 					system("cls");
 					for (int i = 1; i <= Num_Ships; i++) {
 						if (Ship_computer.ships_player[i] != 0) {
@@ -459,35 +459,37 @@ int main()
 							break;
 						}
 					}
-					if (Ship_human.player == 1)
+					if (Ship_human.player == 1){
 						Ship_human.win_player = 1;
+						break;
+					}
 					Ship_human.player = Ship_human.semm_player <= 0 ? 1 : 0;
 				}
 				else if (resultshot == 1) {
 					cout << "Ранен" << endl;
-					Sleep(1000);
+					//Sleep(1000);
 					system("cls");
 				}
 				else {
 					cout << "Промах";
-					Sleep(1000);
+					//Sleep(1000);
 					system("cls");
 				}
 			}
 			else {
 				cout << "Ход компьютера: ";
-				Sleep(1000);
+				//Sleep(1000);
 
 				int mode = 0; // режим стрельбы
 
 				vector <int> dirs = { 3, 2, 1, 0 };
 				// режим 1, когда алгоритм действует случаным образом 
 				if (mode == 0) {
-					do {
+					//do {
 						Ship_computer.x = rand() % N;
 						Ship_computer.y = rand() % N;
 						resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, Ship_human.x, Ship_human.y);
-					} while (Ship_human.map_player[Ship_computer.x][Ship_computer.y] == -2);
+					//} while (resultshot != 3);
 					if (resultshot == 1) {
 						mode = 1;
 						Ship_computer.temp_x = Ship_computer.x;
@@ -496,6 +498,16 @@ int main()
 
 					}
 					else if (resultshot == 2) {
+						for (int i = 1; i <= Num_Ships; i++) {
+							if (Ship_human.ships_player[i] != 0) {
+								Ship_human.player = 0;
+								break;
+							}
+						}
+						if (Ship_human.player == 1) {
+							Ship_human.win_player = 1;
+							break;
+						}
 						cout << "Убит";
 					}
 					else
@@ -549,7 +561,7 @@ int main()
 					if (resultshot == 1) {
 
 						cout << "Ранен" << endl;
-						Sleep(1000);
+						//Sleep(1000);
 					}
 					else if (resultshot == 2) {
 						for (int i = 1; i <= Num_Ships; i++) {
@@ -558,11 +570,15 @@ int main()
 								break;
 							}
 						}
-						if (Ship_computer.player == 1)
+						if (Ship_computer.player == 1) {
 							Ship_computer.win_player = 1;
+							break;
+						}
 						cout << "Убит" << endl;
 						mode = 0;
-						Sleep(1000);
+						dirs.clear();
+						dirs = { 3, 2, 1, 0 };
+						//Sleep(1000);
 					}
 					else {
 						Ship_human.map_player[Ship_computer.x][Ship_computer.y] = -2;
@@ -573,17 +589,17 @@ int main()
 						Ship_computer.x = Ship_computer.temp_x;
 						Ship_computer.y = Ship_computer.temp_y;
 						cout << "Промах" << endl;
-						Sleep(1000);
+						//Sleep(1000);
 					}
 				}
 			}
 			system("cls");
 		} while (resultshot != 0);
-		turn = turn == 0 ? 1 : 0;
+		//turn = turn == 0 ? 1 : 0;
 	}
 	map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
 	map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
-	if (Ship_human.win_player == true) {
+	if (Ship_human.win_player) {
 		cout << "Вы победили" << endl;
 		Sleep(1000);
 	}
