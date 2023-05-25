@@ -1,15 +1,13 @@
 #include <iostream>
 #include <windows.h>
-#include <ctime>
-#include <conio.h>
+#include <conio.h> // для _getch 
 #include <string>
-#include <fstream>
-#include <locale>
+#include <vector>
 
 using namespace std;
 
-const int N = 10;
-const int Num_Ships = 10;
+const int N = 10;// размер массива
+const int Num_Ships = 10;// колличество кораблей
 
 int Ships_id = 1;
 int Ships[11] = { 0 };
@@ -179,7 +177,7 @@ bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
 	return setting_is_possible;
 }
 // рандомная расстановка короблей
-void set_rand_ships(int map[N][N], int size_ship, int ship_id)
+void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 {
 	int x, y;
 	int dir = 0;//направление
@@ -199,7 +197,7 @@ void set_rand_ships(int map[N][N], int size_ship, int ship_id)
 			x = temp_x;
 			y = temp_y;
 			for (int i = 0; i < size_ship; i++) {//запись коробля в массив
-				map[x][y] = ship_id;
+				map[x][y] = ships_id;
 				increase_x_y(x, y, dir);
 				//защита от переполнения
 				x = x > 9 ? 9 : x;
@@ -248,10 +246,10 @@ int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
 			result = 2;
 		else
 			result = 1;
-		map[x][y] = -1;
+		map[x][y] = -1; // попал
 	}
 	else
-		map[x][y] = -2;
+		map[x][y] = -2; //промах
 	mask[x][y] = 1;
 	return result;
 }
@@ -309,7 +307,7 @@ void array_filling(int ships[Num_Ships + 1])
 		}
 	}
 }
-// расстановка кораблей человека вручную
+// расстановка кораблей вручную
 void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_human[N][N])
 {
 	int size_ship = 4;
@@ -393,13 +391,116 @@ void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_huma
 		system("cls");
 	}
 }
+// искуственный интеллект
+/*void artificial_intelligence(int map[N][N])
+{
+	int first_hit_x = 0;// первое попадание
+	int first_hit_y = 0;// первое попадание
+
+	int mode = 0; // режим стрельбы
+
+	int x = 0; // кордината цели
+	int y = 0; // кордината цели
+
+	int dir = 0;// направление 1 - влево, 2 - вправо 3 - вверх 4 - вверхвниз
+	int live = 4;
+
+	vector <int> dirs = { 3, 2, 1, 0 };
+	do
+	{
+		// режим 1, когда алгоритм действует случаным образом 
+		if (mode == 0) {
+			x = rand() % N;
+			y = rand() % N;
+			if (map[x][y] == 1) {
+				mode = 1;
+				live = map[x][y - 1];
+				map[x][y] = 2;
+				first_hit_x = x;
+				first_hit_y = y;
+				cout << "Ранен" << endl;
+
+			}
+			else
+				map[x][y] = -2;
+				cout << "Промах" << endl;
+		}
+		// режим 2
+		else if (mode == 1) {
+			// блок 1 изменяе x пока не будет осуществлён промах или не упрётся в границу
+			bool cheng_dir = 0; // нужно ли менять направление
+			// стрельба влево
+			if (dir == 0) {
+				if (x > 0)
+					x--;
+				else 
+					cheng_dir = 1;
+			}
+			// стрельба вправо
+			else if (dir == 1) {
+				if (x < N - 1)
+					x++;
+				else
+					cheng_dir = 1;
+			}
+			// стрельба вверх
+			else if (dir == 2) {
+				if (y > 0)
+					y--;
+				else
+					cheng_dir = 1;
+			}
+			// стрельба вниз
+			else if (dir == 3) {
+				if (y < N - 1)
+					y++;
+				else
+					cheng_dir = 1;
+			}
+
+			if (cheng_dir == 1){
+				if (!dirs.empty()) {
+					dir = dirs[dirs.size() - 1];
+					dirs.pop_back();
+				}
+				x = first_hit_x;
+				y = first_hit_y;
+				continue;
+				
+			}
+			// блок 2 проверка состояния цели
+			if (map[x][y] == 1 && live > 1) {
+
+				map[x][y] = -1;
+				cout << "Ранен" << endl;
+				live--;
+			}
+			else if (map[x][y] && live == 1) {
+
+				map[x][y] = -1;
+				cout << "Убит" << endl;
+				mode = 0;
+				live = 0;
+			}
+			else {
+				map[x][y] = -2;
+				if (!dirs.empty()) {
+					dir = dirs[dirs.size() - 1];
+					dirs.pop_back();
+				}
+				x = first_hit_x;
+				y = first_hit_y;
+				cout << "Промах" << endl;
+			}
+
+		}
+	} while (live != 0);
+}*/
 
 int main()
 {
-	//SetConsoleOutputCP(CP_UTF8);
-	//setlocale(LC_ALL, "Russian");
-	
-	
+	SetConsoleOutputCP(CP_UTF8);
+
 	ship Ship_human;
 	ship Ship_computer;
 
