@@ -13,10 +13,6 @@ int Ships_id = 1;
 int Ships[11] = { 0 };
 
 struct ship {
-	int x = 0, y = 0; // кординаты цели
-
-	int temp_x = x;
-	int temp_y = y;
 
 	int dir = 0; // направление
 	int temp_dir = dir;
@@ -256,7 +252,7 @@ int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
 			result = 2; // убил
 		else
 			result = 1; // попал
-		map[x][y] = -1; 
+		map[x][y] = -1;
 	}
 	else
 		map[x][y] = -2; //промах
@@ -406,8 +402,17 @@ int main()
 {
 	SetConsoleOutputCP(CP_UTF8);
 
+	int x = 0, y = 0; // кординаты цели
+
+	int temp_x = x;
+	int temp_y = y;
+
 	ship Ship_human;
 	ship Ship_computer;
+
+	int mode = 0; // режим стрельбы
+	bool cheng_dir = 0;
+	vector <int> dirs = { 3, 2, 1, 0 };
 
 	int size_ship = 4; // размер коробля
 	int ch = 0; // какая нажата клавиша
@@ -427,7 +432,11 @@ int main()
 	array_filling(Ship_computer.ships_player);
 
 	// расстановка кораблей человека вручную
-	manual_placement_of_ships(gemer, Ship_human.map_player, Ship_human.mask_player);
+	//manual_placement_of_ships(gemer, Ship_human.map_player, Ship_human.mask_player);
+
+	// расстановка кораблей бота рандомно
+	for (int i = 1; i <= Num_Ships; i++)
+		set_rand_ships(Ship_human.map_player, Ship_human.ships_player[i], i);
 
 	// расстановка кораблей бота рандомно
 	for (int i = 1; i <= Num_Ships; i++)
@@ -436,19 +445,20 @@ int main()
 	// отвечает за стрельбу пока не будет промах
 	while (Ship_computer.win_player == false && Ship_human.win_player == false) {
 		do {
+			system("cls");
 			map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
 			map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
 
 			if (turn == 1) {
 				do {
 					cout << "Введите кординаты цели: ";
-					cin >> Ship_human.x >> Ship_human.y;
+					cin >> x >> y;
 					system("cls");
 					map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
 					map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
-				} while (Ship_human.x > 9 || Ship_human.y > 9 || Ship_human.x < 0 || Ship_human.y < 0);
+				} while (x > 9 || y > 9 || x < 0 || y < 0);
 
-				resultshot = shot(Ship_computer.map_player, Ship_computer.mask_player, Ship_computer.ships_player, Ship_human.x, Ship_human.y);
+				resultshot = shot(Ship_computer.map_player, Ship_computer.mask_player, Ship_computer.ships_player, x, y);
 				if (resultshot == 2) {
 					cout << "Убил" << endl;
 					//Sleep(1000);
@@ -459,7 +469,7 @@ int main()
 							break;
 						}
 					}
-					if (Ship_human.player == 1){
+					if (Ship_human.player == 1) {
 						Ship_human.win_player = 1;
 						break;
 					}
@@ -478,22 +488,20 @@ int main()
 			}
 			else {
 				cout << "Ход компьютера: ";
-				//Sleep(1000);
+				Sleep(1000);
 
-				int mode = 0; // режим стрельбы
-
-				vector <int> dirs = { 3, 2, 1, 0 };
 				// режим 1, когда алгоритм действует случаным образом 
 				if (mode == 0) {
-					//do {
-						Ship_computer.x = rand() % N;
-						Ship_computer.y = rand() % N;
-						resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, Ship_human.x, Ship_human.y);
-					//} while (resultshot != 3);
+					do {
+					x = rand() % N;
+					y = rand() % N;
+					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, x, y);
+					} while (resultshot == 3);
+					
 					if (resultshot == 1) {
 						mode = 1;
-						Ship_computer.temp_x = Ship_computer.x;
-						Ship_computer.temp_y = Ship_computer.y;
+						temp_x = x;
+						temp_y = y;
 						cout << "Ранен" << endl;
 
 					}
@@ -511,52 +519,53 @@ int main()
 						cout << "Убит";
 					}
 					else
-					cout << "Промах" << endl;
+						cout << "Промах" << endl;
 				}
 				// режим 2
 				else if (mode == 1) {
 					// блок 1 изменяе x пока не будет осуществлён промах или не упрётся в границу
-					bool cheng_dir = 0; // нужно ли менять направление
 					// стрельба влево
 					if (Ship_computer.dir == 0) {
-						if (Ship_computer.x > 0)
-							Ship_computer.x--;
+						if (x > 0)
+							x--;
 						else
 							cheng_dir = 1;
 					}
 					// стрельба вправо
 					else if (Ship_computer.dir == 1) {
-						if (Ship_computer.x < N - 1)
-							Ship_computer.x++;
+						if (x < N - 1)
+							x++;
 						else
 							cheng_dir = 1;
 					}
 					// стрельба вверх
 					else if (Ship_computer.dir == 2) {
-						if (Ship_computer.y > 0)
-							Ship_computer.y--;
+						if (y > 0)
+							y--;
 						else
 							cheng_dir = 1;
 					}
 					// стрельба вниз
 					else if (Ship_computer.dir == 3) {
-						if (Ship_computer.y < N - 1)
-							Ship_computer.y++;
+						if (y < N - 1)
+							y++;
 						else
 							cheng_dir = 1;
 					}
 
 					if (cheng_dir == 1) {
 						if (!dirs.empty()) {
-							Ship_computer.dir = dirs[dirs.size() - 1];
 							dirs.pop_back();
+							Ship_computer.dir = dirs[dirs.size() - 1];
+							
 						}
-						Ship_computer.x = Ship_computer.temp_x;
-						Ship_computer.y = Ship_computer.temp_y;
+						x = temp_x;
+						y = temp_y;
+						cheng_dir = 0;
 						continue;
 
 					}
-					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, Ship_human.x, Ship_human.y);
+					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, x, y);
 					// блок 2 проверка состояния цели
 					if (resultshot == 1) {
 
@@ -578,22 +587,23 @@ int main()
 						mode = 0;
 						dirs.clear();
 						dirs = { 3, 2, 1, 0 };
+						Ship_computer.dir = 0;
 						//Sleep(1000);
 					}
 					else {
-						Ship_human.map_player[Ship_computer.x][Ship_computer.y] = -2;
+						Ship_human.map_player[x][y] = -2;
 						if (!dirs.empty()) {
+							dirs.pop_back(); // удалить последний элемент
 							Ship_computer.dir = dirs[dirs.size() - 1];
-							dirs.pop_back();
+
 						}
-						Ship_computer.x = Ship_computer.temp_x;
-						Ship_computer.y = Ship_computer.temp_y;
+						x = temp_x;
+						y = temp_y;
 						cout << "Промах" << endl;
 						//Sleep(1000);
 					}
 				}
 			}
-			system("cls");
 		} while (resultshot != 0);
 		//turn = turn == 0 ? 1 : 0;
 	}
