@@ -129,6 +129,13 @@
   <ItemGroup>
     <ClCompile Include="Sea-battle.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="defines.h" />
+    <ClInclude Include="shotDirs.h" />
+    <ClInclude Include="shotResult.h" />
+    <ClInclude Include="shotMode.h" />
+    <ClInclude Include="player.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

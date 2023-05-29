@@ -3,34 +3,14 @@
 #include <conio.h> // для _getch 
 #include <string>
 #include <vector>
+#include "defines.h"
+#include "player.h"
+#include "shotMode.h"
+#include "shotResult.h"
+#include "shotDirs.h"
 
 using namespace std;
 
-const int N = 10;// размер массива
-const int Num_Ships = 10;// колличество кораблей
-
-int Ships_id = 1;
-int Ships[11] = { 0 };
-
-struct Player {
-
-	int x = 0; // кординаты цели
-	int y = 0; // кординаты цели
-	int dir = 0; // направление
-	int temp_dir = dir;
-
-	int map_player[N][N] = { 0 }; // поле игрока
-
-	int mask_player[N][N] = { 0 };// туман войны игрока
-
-	int ships_player[Num_Ships + 1] = { 0 }; // коробли игрока
-
-	int semm_player = 0; // остались ли у игрока корабли
-
-	bool player = 1; // выйграл ли игрок
-
-	bool win_player = 0; // остались ли игрока корабли
-};
 // передвижения курсора
 void gotox(short x, short y)
 {//переставления курсора в заданные кординаты в консольном окне
@@ -162,6 +142,9 @@ bool ship_in_map(int x, int y, int dir, int size_ship)
 }
 //проверка возможности постановки корабля при ручной постанки
 bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
+	int Ships_id = 1;
+	int Ships[Num_Ships + 1] = { 0 };
+
 	int temp_x = x;
 	int temp_y = y;
 	bool setting_is_possible = 1;// пройдина ли проверка
@@ -243,17 +226,17 @@ void map_show(int map[N][N], int mask[N][N], string gemer, bool usemask)
 	cout << endl;
 }
 // выстрел
-int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
+shotResult shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
 {
-	int result = 0; // куда попали убит ранен или промах
+	shotResult result = Slip; // куда попали убит ранен или промах
 	if (map[x][y] == -1 || map[x][y] == -2)
-		result = 3;
+		result = AlreadyShot;
 	else if (map[x][y] >= 1) {
 		ships[map[x][y]] --;
 		if (ships[map[x][y]] <= 0)
-			result = 2; // убил
+			result = Killed; // убил
 		else
-			result = 1; // попал
+			result = Injured; // попал
 		map[x][y] = -1;
 	}
 	else
@@ -410,15 +393,17 @@ int main()
 	int temp_x = 0;
 	int temp_y = 0;
 
-	int mode = 0; // режим стрельбы
+	
 	bool cheng_dir = 0;
-	vector <int> dirs = { 3, 2, 1, 0 };
+	vector <shotDirs> dirs = { Down, Up, Right, Left };
+	shotMode curShotMode = Miss;
+	
 
 	int size_ship = 4; // размер коробля
 	int ch = 0; // какая нажата клавиша
 	int amount_ship = 0;// количество кораблей на поле
 
-	int resultshot = 0; // попадание в корабль
+	shotResult resultshot = Slip; // попадание в корабль
 
 	string gemer = "Поле Игрока";
 	string gemer2 = "Поле Компьютера";
@@ -452,7 +437,7 @@ int main()
 				} while (Ship_human.x > 9 && Ship_human.y > 9 && Ship_human.x < 0 && Ship_human.y < 0);
 
 				resultshot = shot(Ship_computer.map_player, Ship_computer.mask_player, Ship_computer.ships_player, Ship_human.x, Ship_human.y);
-				if (resultshot == 2) {
+				if (resultshot == Killed) {
 					cout << "Убил" << endl;
 
 					for (int i = 1; i <= Num_Ships; i++) {
@@ -467,7 +452,7 @@ int main()
 					}
 					Ship_human.player = Ship_human.semm_player <= 0 ? 1 : 0;
 				}
-				else if (resultshot == 1) 
+				else if (resultshot == Injured)
 					cout << "Ранен" << endl;
 
 				else 
@@ -483,21 +468,21 @@ int main()
 				Sleep(1000);
 
 				// режим 1, когда алгоритм действует случаным образом 
-				if (mode == 0) {
+				if (curShotMode == Miss) {
 					do {
 					Ship_computer.x = rand() % N;
 					Ship_computer.y = rand() % N;
 					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, Ship_computer.x, Ship_computer.y);
 					} while (resultshot == 3);
 					cout << Ship_computer.x << " " << Ship_computer.y << endl;
-					if (resultshot == 1) {
-						mode = 1;
+					if (resultshot == Injured) {
+						curShotMode = Hit;
 						temp_x = Ship_computer.x;
 						temp_y = Ship_computer.y;
 						cout << "Ранен" << endl;
 
 					}
-					else if (resultshot == 2) {
+					else if (resultshot == Killed) {
 						for (int i = 1; i <= Num_Ships; i++) {
 							if (Ship_human.ships_player[i] != 0) {
 								Ship_computer.player = 0;
@@ -515,8 +500,8 @@ int main()
 						cout << "Промах" << endl;
 					Sleep(1000);
 				}
-				// режим 2
-				else if (mode == 1) {
+				// режим 2 (попали)
+				else if (curShotMode == Hit) {
 					// блок 1 изменяе x пока не будет осуществлён промах или не упрётся в границу
 					// стрельба влево
 					if (Ship_computer.dir == 0) {
@@ -561,12 +546,12 @@ int main()
 					}
 					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, Ship_computer.x, Ship_computer.y);
 					// блок 2 проверка состояния цели
-					if (resultshot == 1) {
+					if (resultshot == Injured) {
 
 						cout << "Ранен" << endl;
 						Sleep(1000);
 					}
-					else if (resultshot == 2) {
+					else if (resultshot == Killed) {
 						cout << "Убит" << endl;
 						for (int i = 1; i <= Num_Ships; i++) {
 							if (Ship_human.ships_player[i] != 0) {
@@ -579,9 +564,9 @@ int main()
 							break;
 						}
 						Ship_computer.player = Ship_computer.semm_player <= 0 ? 1 : 0;
-						mode = 0;
+						curShotMode = Miss;
 						dirs.clear();
-						dirs = { 3, 2, 1, 0 };
+						dirs = { Down, Up, Right, Left };
 						Ship_computer.dir = 0;
 						Sleep(1000);
 					}
@@ -600,7 +585,7 @@ int main()
 				}
 			}
 			system("cls");
-		} while (resultshot != 0 && resultshot != 3);
+		} while (resultshot != Slip && resultshot != AlreadyShot);
 		turn = turn == 0 ? 1 : 0;
 		
 	}
