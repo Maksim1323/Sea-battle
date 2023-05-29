@@ -4,7 +4,11 @@
 struct Player {
 
 	int x = 0; // кординаты цели
+	int temp_x = 0;
+	
 	int y = 0; // кординаты цели
+	int temp_y = 0;
+
 	int dir = 0; // направление
 	int temp_dir = dir;
 
@@ -19,6 +23,8 @@ struct Player {
 	bool player = 1; // выйграл ли игрок
 
 	bool win_player = 0; // остались ли игрока корабли
+
+	string  gamer_name;
 };
 ```
 >Эта функция овечает за передвижение отображения корабля в консоли
@@ -229,7 +235,7 @@ void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 ```c++
 void map_show(int map[N][N], int mask[N][N], string gamer, bool usemask)
 {
-	cout << gamer << endl;
+	cout << "Поле игрока - " << gamer << endl;
 	cout << "  ";
 	for (int i = 0; i < N; i++)
 		cout << i << " ";
@@ -259,17 +265,17 @@ void map_show(int map[N][N], int mask[N][N], string gamer, bool usemask)
 >Эта функция отвечает за проверку попадания в цель
 
 ```c++
-int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
+shot_result shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
 {
-	int result = 0; // куда попали убит ранен или промах
+	shot_result result = Slip; // куда попали убит ранен или промах
 	if (map[x][y] == -1 || map[x][y] == -2)
-		result = 3;
+		result = AlreadyShot;
 	else if (map[x][y] >= 1) {
 		ships[map[x][y]] --;
 		if (ships[map[x][y]] <= 0)
-			result = 2; // убил
+			result = Killed; // убил
 		else
-			result = 1; // попал
+			result = Injured; // попал
 		map[x][y] = -1;
 	}
 	else
@@ -420,5 +426,14 @@ void manual_placement_of_ships(string& gamer, int map_human[N][N], int mask_huma
 		}
 		system("cls");
 	}
+}
+```
+Эта функция отвечает за очистку и прорисовку полей
+```c++
+void clearing_and_drawing_fields(int map_human[N][N], int mask_human[N][N], string gamer_human, int map_computer[N][N], int mask_computer[N][N], string gamer_computer)
+{
+	system("cls");
+	map_show(map_human, mask_human, gamer_human, 0);
+	map_show(map_computer, mask_computer, gamer_computer, 1);
 }
 ```
