@@ -407,7 +407,7 @@ int main()
 	
 	shot_result resultShot = Slip; // попадание в корабль
 
-	bool queue = 1; // 1 ходит человек
+	bool queue = 0; // 1 ходит человек
 
 	// заполнение массива с короблями человека
 	array_filling(Ship_human.ships_player);
@@ -416,11 +416,16 @@ int main()
 	array_filling(Ship_computer.ships_player);
 
 	// расстановка кораблей человека вручную
-	manual_placement_of_ships(Ship_human.gamer_name, Ship_human.map_player, Ship_human.mask_player);
+	//manual_placement_of_ships(Ship_human.gamer_name, Ship_human.map_player, Ship_human.mask_player);
 
 	// расстановка кораблей бота рандомно
 	for (int i = 1; i <= Num_Ships; i++)
 		set_rand_ships(Ship_computer.map_player, Ship_computer.ships_player[i], i);
+
+
+	// расстановка кораблей бота рандомно
+	for (int i = 1; i <= Num_Ships; i++)
+		set_rand_ships(Ship_human.map_player, Ship_human.ships_player[i], i);
 
 	// отвечает за стрельбу пока не будет промах
 	while (Ship_computer.win_player == false && Ship_human.win_player == false) {
@@ -565,7 +570,7 @@ int main()
 						Ship_computer.dir = 0;
 						Sleep(1000);
 					}
-					else {
+					else if (resultShot == Slip) {
 						Ship_human.map_player[Ship_computer.x][Ship_computer.y] = -2;
 						if (!dirs.empty()) {
 							dirs.pop_back(); // удалить последний элемент
@@ -581,7 +586,7 @@ int main()
 			}
 			system("cls");
 		} while (resultShot != Slip && resultShot != AlreadyShot);
-		queue = queue == 0 ? 1 : 0;
+		//queue = queue == 0 ? 1 : 0;
 		
 	}
 	clearing_and_drawing_fields(Ship_human.map_player, Ship_human.mask_player, Ship_human.gamer_name, Ship_computer.map_player, Ship_computer.mask_player, Ship_computer.gamer_name);
