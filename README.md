@@ -1,27 +1,27 @@
-# Sea-battle
+п»ї# Sea-battle
 
 ```c++
 struct Player {
 
-	int x = 0; // кординаты цели
-	int y = 0; // кординаты цели
-	int dir = 0; // направление
+	int x = 0; // РєРѕСЂРґРёРЅР°С‚С‹ С†РµР»Рё
+	int y = 0; // РєРѕСЂРґРёРЅР°С‚С‹ С†РµР»Рё
+	int dir = 0; // РЅР°РїСЂР°РІР»РµРЅРёРµ
 	int temp_dir = dir;
 
-	int map_player[N][N] = { 0 }; // поле игрока
+	int map_player[N][N] = { 0 }; // РїРѕР»Рµ РёРіСЂРѕРєР°
 
-	int mask_player[N][N] = { 0 };// туман войны игрока
+	int mask_player[N][N] = { 0 };// С‚СѓРјР°РЅ РІРѕР№РЅС‹ РёРіСЂРѕРєР°
 
-	int ships_player[Num_Ships + 1] = { 0 }; // коробли игрока
+	int ships_player[Num_Ships + 1] = { 0 }; // РєРѕСЂРѕР±Р»Рё РёРіСЂРѕРєР°
 
-	int semm_player = 0; // остались ли у игрока корабли
+	int semm_player = 0; // РѕСЃС‚Р°Р»РёСЃСЊ Р»Рё Сѓ РёРіСЂРѕРєР° РєРѕСЂР°Р±Р»Рё
 
-	bool player = 1; // выйграл ли игрок
+	bool player = 1; // РІС‹Р№РіСЂР°Р» Р»Рё РёРіСЂРѕРє
 
-	bool win_player = 0; // остались ли игрока корабли
+	bool win_player = 0; // РѕСЃС‚Р°Р»РёСЃСЊ Р»Рё РёРіСЂРѕРєР° РєРѕСЂР°Р±Р»Рё
 };
 ```
-Эта структура содержит все нужные переменные для игрока
+Р­С‚Р° СЃС‚СЂСѓРєС‚СѓСЂР° СЃРѕРґРµСЂР¶РёС‚ РІСЃРµ РЅСѓР¶РЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ РёРіСЂРѕРєР°
 
 ```c++
 void gotox(short x, short y)
@@ -30,7 +30,7 @@ void gotox(short x, short y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), p);
 }
 ```
-Эта функция овечает за передвижение отображения корабля в консоли
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕРІРµС‡Р°РµС‚ Р·Р° РїРµСЂРµРґРІРёР¶РµРЅРёРµ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРѕСЂР°Р±Р»СЏ РІ РєРѕРЅСЃРѕР»Рё
 
 ```c++
 void increase_x_y(int& x, int& y, int& dir)
@@ -51,7 +51,7 @@ void increase_x_y(int& x, int& y, int& dir)
 	}
 }
 ```
-Эта функция отвечает за увеличение x и y взависимомти от направления
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° СѓРІРµР»РёС‡РµРЅРёРµ x Рё y РІР·Р°РІРёСЃРёРјРѕРјС‚Рё РѕС‚ РЅР°РїСЂР°РІР»РµРЅРёСЏ
 
 ```c++
 bool ship_position_check(int x, int y, int dir, int map[N][N], int size_ship)
@@ -119,7 +119,7 @@ bool ship_position_check(int x, int y, int dir, int map[N][N], int size_ship)
 	return setting_is_possible;
 }
 ```
-Эта функция отвечает за проверку возможности постановки корабля
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° РїСЂРѕРІРµСЂРєСѓ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РїРѕСЃС‚Р°РЅРѕРІРєРё РєРѕСЂР°Р±Р»СЏ
 
 ```c++
 void ship_show(int x, int y, int dir, int size_ship)
@@ -149,12 +149,12 @@ void ship_show(int x, int y, int dir, int size_ship)
 	}
 }
 ```
-Эта функция отвечает за отовечает за расстановку кораблей на поле
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° РѕС‚РѕРІРµС‡Р°РµС‚ Р·Р° СЂР°СЃСЃС‚Р°РЅРѕРІРєСѓ РєРѕСЂР°Р±Р»РµР№ РЅР° РїРѕР»Рµ
 
 ```c++
 bool ship_in_map(int x, int y, int dir, int size_ship)
 {
-	bool in_map = 1;// пройдина ли проверка
+	bool in_map = 1;// РїСЂРѕР№РґРёРЅР° Р»Рё РїСЂРѕРІРµСЂРєР°
 	for (int i = 0; i < size_ship; i++) {
 		if (x < 0 || y < 0 || x >= N || y >= N) {
 			in_map = 0;
@@ -165,19 +165,19 @@ bool ship_in_map(int x, int y, int dir, int size_ship)
 	return in_map;
 }
 ```
-Эта функция определяет находится ли корабль в пределах карты
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕРїСЂРµРґРµР»СЏРµС‚ РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё РєРѕСЂР°Р±Р»СЊ РІ РїСЂРµРґРµР»Р°С… РєР°СЂС‚С‹
 
 ```c++
 bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
 	int temp_x = x;
 	int temp_y = y;
-	bool setting_is_possible = 1;// пройдина ли проверка
-	//проверка возможности постановки коробля
+	bool setting_is_possible = 1;// РїСЂРѕР№РґРёРЅР° Р»Рё РїСЂРѕРІРµСЂРєР°
+	//РїСЂРѕРІРµСЂРєР° РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РїРѕСЃС‚Р°РЅРѕРІРєРё РєРѕСЂРѕР±Р»СЏ
 	setting_is_possible = ship_position_check(x, y, dir, map, size_ship);
 	if (setting_is_possible == 1) {
 		x = temp_x;
 		y = temp_y;
-		for (int i = 0; i < size_ship; i++) {//запись коробля в массив
+		for (int i = 0; i < size_ship; i++) {//Р·Р°РїРёСЃСЊ РєРѕСЂРѕР±Р»СЏ РІ РјР°СЃСЃРёРІ
 			map[x][y] = Ships_id;
 			increase_x_y(x, y, dir);
 			x = x > 9 ? 9 : x;
@@ -190,32 +190,32 @@ bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
 	return setting_is_possible;
 }
 ```
-Эта функция отвечает за проверку возможности постановки корабля при ручной постанки
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° РїСЂРѕРІРµСЂРєСѓ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РїРѕСЃС‚Р°РЅРѕРІРєРё РєРѕСЂР°Р±Р»СЏ РїСЂРё СЂСѓС‡РЅРѕР№ РїРѕСЃС‚Р°РЅРєРё
 
 ```c++
 void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 {
 	int x, y;
-	int dir = 0;//направление
+	int dir = 0;//РЅР°РїСЂР°РІР»РµРЅРёРµ
 	int cout_ship = 0;
 	int temp_x = 0;
 	int temp_y = 0;
 	while (cout_ship < 1) {
-		x = rand() % N;//первичная позиция
-		y = rand() % N;//первичная позиция
+		x = rand() % N;//РїРµСЂРІРёС‡РЅР°СЏ РїРѕР·РёС†РёСЏ
+		y = rand() % N;//РїРµСЂРІРёС‡РЅР°СЏ РїРѕР·РёС†РёСЏ
 		temp_x = x;
 		temp_y = y;
-		dir = rand() % 4;//генератр напрваления
-		bool setting_is_possible = 1;// пройдина ли проверка
-		//проверка возможности постановки коробля
+		dir = rand() % 4;//РіРµРЅРµСЂР°С‚СЂ РЅР°РїСЂРІР°Р»РµРЅРёСЏ
+		bool setting_is_possible = 1;// РїСЂРѕР№РґРёРЅР° Р»Рё РїСЂРѕРІРµСЂРєР°
+		//РїСЂРѕРІРµСЂРєР° РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РїРѕСЃС‚Р°РЅРѕРІРєРё РєРѕСЂРѕР±Р»СЏ
 		setting_is_possible = ship_position_check(x, y, dir, map, size_ship);
 		if (setting_is_possible == 1) {
 			x = temp_x;
 			y = temp_y;
-			for (int i = 0; i < size_ship; i++) {//запись коробля в массив
+			for (int i = 0; i < size_ship; i++) {//Р·Р°РїРёСЃСЊ РєРѕСЂРѕР±Р»СЏ РІ РјР°СЃСЃРёРІ
 				map[x][y] = ships_id;
 				increase_x_y(x, y, dir);
-				//защита от переполнения
+				//Р·Р°С‰РёС‚Р° РѕС‚ РїРµСЂРµРїРѕР»РЅРµРЅРёСЏ
 				x = x > 9 ? 9 : x;
 				y = y > 9 ? 9 : y;
 			}
@@ -224,7 +224,7 @@ void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 	}
 }
 ```
-Эта функция отвечает за рандомную расстановку кораблей
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° СЂР°РЅРґРѕРјРЅСѓСЋ СЂР°СЃСЃС‚Р°РЅРѕРІРєСѓ РєРѕСЂР°Р±Р»РµР№
 
 ```c++
 void map_show(int map[N][N], int mask[N][N], string gemer, bool usemask)
@@ -234,7 +234,7 @@ void map_show(int map[N][N], int mask[N][N], string gemer, bool usemask)
 	for (int i = 0; i < N; i++)
 		cout << i << " ";
 	cout << endl;
-	for (int i = 0; i < N; i++) {//прорисовка
+	for (int i = 0; i < N; i++) {//РїСЂРѕСЂРёСЃРѕРІРєР°
 		cout << i;
 		for (int j = 0; j < N; j++) {
 			if (mask[j][i] == 1 || usemask == 0) {
@@ -256,36 +256,36 @@ void map_show(int map[N][N], int mask[N][N], string gemer, bool usemask)
 	cout << endl;
 }
 ```
-Эта функция отвечает за прорисовку полей
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° РїСЂРѕСЂРёСЃРѕРІРєСѓ РїРѕР»РµР№
 
 ```c++
 int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
 {
-	int result = 0; // куда попали убит ранен или промах
+	int result = 0; // РєСѓРґР° РїРѕРїР°Р»Рё СѓР±РёС‚ СЂР°РЅРµРЅ РёР»Рё РїСЂРѕРјР°С…
 	if (map[x][y] == -1 || map[x][y] == -2)
 		result = 3;
 	else if (map[x][y] >= 1) {
 		ships[map[x][y]] --;
 		if (ships[map[x][y]] <= 0)
-			result = 2; // убил
+			result = 2; // СѓР±РёР»
 		else
-			result = 1; // попал
+			result = 1; // РїРѕРїР°Р»
 		map[x][y] = -1;
 	}
 	else
-		map[x][y] = -2; //промах
+		map[x][y] = -2; //РїСЂРѕРјР°С…
 	mask[x][y] = 1;
 	return result;
 }
 ```
-Эта функция отвечает за проверку попадания в цель
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° РїСЂРѕРІРµСЂРєСѓ РїРѕРїР°РґР°РЅРёСЏ РІ С†РµР»СЊ
 
 ```c++
 void array_filling(int ships[Num_Ships + 1])
 {
 	int amount_ship = 0;
 	int size_ship = 4;
-	// заполнение массива с короблями
+	// Р·Р°РїРѕР»РЅРµРЅРёРµ РјР°СЃСЃРёРІР° СЃ РєРѕСЂРѕР±Р»СЏРјРё
 	for (int i = 1; i <= Num_Ships; i++) {
 		switch (size_ship) {
 		case 4:
@@ -335,7 +335,7 @@ void array_filling(int ships[Num_Ships + 1])
 	}
 }
 ```
-Эта функция отвечает за заполнение массива с кораблями
+Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° Р·Р°РїРѕР»РЅРµРЅРёРµ РјР°СЃСЃРёРІР° СЃ РєРѕСЂР°Р±Р»СЏРјРё
 
 ```c++
 void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_human[N][N])
@@ -353,24 +353,24 @@ void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_huma
 		map_show(map_human, mask_human, gemer, 0);
 		ship_show(x, y, dir, size_ship);
 		ch = _getch();
-		// изменить координаты или направление
+		// РёР·РјРµРЅРёС‚СЊ РєРѕРѕСЂРґРёРЅР°С‚С‹ РёР»Рё РЅР°РїСЂР°РІР»РµРЅРёРµ
 		switch (ch) {
-		case 100:// d вправо
+		case 100:// d РІРїСЂР°РІРѕ
 			x += 2;
 			break;
-		case 115:// s вниз
+		case 115:// s РІРЅРёР·
 			y++;
 			break;
-		case 97:// a влево
+		case 97:// a РІР»РµРІРѕ
 			x -= 2;
 			break;
-		case 119:// w вверх
+		case 119:// w РІРІРµСЂС…
 			y--;
 			break;
-		case 114:// r поворот
+		case 114:// r РїРѕРІРѕСЂРѕС‚
 			dir = dir == 0 ? 1 : 0;
 			break;
-		case 13:// enter установка коробля
+		case 13:// enter СѓСЃС‚Р°РЅРѕРІРєР° РєРѕСЂРѕР±Р»СЏ
 			if (set_ship(map_human, x / 2, y, dir, size_ship)) {
 				x = 0;
 				y = 0;
@@ -422,4 +422,4 @@ void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_huma
 	}
 }
 ```
-Эта функция отвечает за ручную расстановку кораблей
+>Р­С‚Р° С„СѓРЅРєС†РёСЏ РѕС‚РІРµС‡Р°РµС‚ Р·Р° СЂСѓС‡РЅСѓСЋ СЂР°СЃСЃС‚Р°РЅРѕРІРєСѓ РєРѕСЂР°Р±Р»РµР№
