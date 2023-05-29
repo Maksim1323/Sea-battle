@@ -1,6 +1,6 @@
 #pragma once
 // куда попали убит ранен промах или уже попадали
-enum  shotResult
+enum  shot_result
 {
 	Slip = 0,// Промах
 	Injured = 1,// Ранен

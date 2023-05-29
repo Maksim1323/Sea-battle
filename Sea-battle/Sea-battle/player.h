@@ -1,11 +1,16 @@
 #pragma once
-#include "defines.h"
 
+#include "defines.h"
+using namespace std;
 
 struct Player {
 
 	int x = 0; // кординаты цели
+	int temp_x = 0;
+	
 	int y = 0; // кординаты цели
+	int temp_y = 0;
+
 	int dir = 0; // направление
 	int temp_dir = dir;
 
@@ -20,4 +25,6 @@ struct Player {
 	bool player = 1; // выйграл ли игрок
 
 	bool win_player = 0; // остались ли игрока корабли
+
+	string  gamer_name;
 };
