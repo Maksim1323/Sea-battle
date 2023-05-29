@@ -227,9 +227,9 @@ void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 Эта функция отвечает за рандомную расстановку кораблей
 
 ```c++
-void map_show(int map[N][N], int mask[N][N], string gemer, bool usemask)
+void map_show(int map[N][N], int mask[N][N], string gamer, bool usemask)
 {
-	cout << gemer << endl;
+	cout << gamer << endl;
 	cout << "  ";
 	for (int i = 0; i < N; i++)
 		cout << i << " ";
@@ -338,7 +338,7 @@ void array_filling(int ships[Num_Ships + 1])
 Эта функция отвечает за заполнение массива с кораблями
 
 ```c++
-void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_human[N][N])
+void manual_placement_of_ships(string& gamer, int map_human[N][N], int mask_human[N][N])
 {
 	int size_ship = 4;
 	int amount_ship = 0;
@@ -350,7 +350,7 @@ void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_huma
 	int temp_y = y;
 	int temp_dir = dir;
 	while (size_ship != 0) {
-		map_show(map_human, mask_human, gemer, 0);
+		map_show(map_human, mask_human, gamer, 0);
 		ship_show(x, y, dir, size_ship);
 		ch = _getch();
 		// изменить координаты или направление
