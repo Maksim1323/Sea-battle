@@ -432,12 +432,7 @@ int main()
 	array_filling(Ship_computer.ships_player);
 
 	// расстановка кораблей человека вручную
-	//manual_placement_of_ships(gemer, Ship_human.map_player, Ship_human.mask_player);
-
-	// расстановка кораблей бота рандомно
-	for (int i = 1; i <= Num_Ships; i++)
-		set_rand_ships(Ship_human.map_player, Ship_human.ships_player[i], i);
-
+	manual_placement_of_ships(gemer, Ship_human.map_player, Ship_human.mask_player);
 
 	// расстановка кораблей бота рандомно
 	for (int i = 1; i <= Num_Ships; i++)
