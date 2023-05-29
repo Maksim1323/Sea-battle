@@ -1,5 +1,5 @@
 ﻿# Sea-battle
-
+>Эта структура содержит все нужные переменные для игрока
 ```c++
 struct Player {
 
@@ -21,7 +21,7 @@ struct Player {
 	bool win_player = 0; // остались ли игрока корабли
 };
 ```
-Эта структура содержит все нужные переменные для игрока
+>Эта функция овечает за передвижение отображения корабля в консоли
 
 ```c++
 void gotox(short x, short y)
@@ -30,7 +30,7 @@ void gotox(short x, short y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), p);
 }
 ```
-Эта функция овечает за передвижение отображения корабля в консоли
+>Эта функция отвечает за увеличение x и y взависимомти от направления
 
 ```c++
 void increase_x_y(int& x, int& y, int& dir)
@@ -51,7 +51,7 @@ void increase_x_y(int& x, int& y, int& dir)
 	}
 }
 ```
-Эта функция отвечает за увеличение x и y взависимомти от направления
+>Эта функция отвечает за проверку возможности постановки корабля
 
 ```c++
 bool ship_position_check(int x, int y, int dir, int map[N][N], int size_ship)
@@ -119,7 +119,7 @@ bool ship_position_check(int x, int y, int dir, int map[N][N], int size_ship)
 	return setting_is_possible;
 }
 ```
-Эта функция отвечает за проверку возможности постановки корабля
+>Эта функция отвечает за отовечает за расстановку кораблей на поле
 
 ```c++
 void ship_show(int x, int y, int dir, int size_ship)
@@ -149,7 +149,7 @@ void ship_show(int x, int y, int dir, int size_ship)
 	}
 }
 ```
-Эта функция отвечает за отовечает за расстановку кораблей на поле
+>Эта функция определяет находится ли корабль в пределах карты
 
 ```c++
 bool ship_in_map(int x, int y, int dir, int size_ship)
@@ -165,7 +165,7 @@ bool ship_in_map(int x, int y, int dir, int size_ship)
 	return in_map;
 }
 ```
-Эта функция определяет находится ли корабль в пределах карты
+>Эта функция отвечает за проверку возможности постановки корабля при ручной постанки
 
 ```c++
 bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
@@ -190,7 +190,7 @@ bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
 	return setting_is_possible;
 }
 ```
-Эта функция отвечает за проверку возможности постановки корабля при ручной постанки
+>Эта функция отвечает за рандомную расстановку кораблей
 
 ```c++
 void set_rand_ships(int map[N][N], int size_ship, int ships_id)
@@ -224,7 +224,7 @@ void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 	}
 }
 ```
-Эта функция отвечает за рандомную расстановку кораблей
+>Эта функция отвечает за прорисовку полей
 
 ```c++
 void map_show(int map[N][N], int mask[N][N], string gamer, bool usemask)
@@ -256,7 +256,7 @@ void map_show(int map[N][N], int mask[N][N], string gamer, bool usemask)
 	cout << endl;
 }
 ```
-Эта функция отвечает за прорисовку полей
+>Эта функция отвечает за проверку попадания в цель
 
 ```c++
 int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
@@ -278,7 +278,7 @@ int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
 	return result;
 }
 ```
-Эта функция отвечает за проверку попадания в цель
+>Эта функция отвечает за заполнение массива с кораблями
 
 ```c++
 void array_filling(int ships[Num_Ships + 1])
@@ -335,7 +335,7 @@ void array_filling(int ships[Num_Ships + 1])
 	}
 }
 ```
-Эта функция отвечает за заполнение массива с кораблями
+>Эта функция отвечает за ручную расстановку кораблей
 
 ```c++
 void manual_placement_of_ships(string& gamer, int map_human[N][N], int mask_human[N][N])
@@ -422,4 +422,3 @@ void manual_placement_of_ships(string& gamer, int map_human[N][N], int mask_huma
 	}
 }
 ```
->Эта функция отвечает за ручную расстановку кораблей
