@@ -197,9 +197,9 @@ void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 	}
 }
 //прорисовка полей
-void map_show(int map[N][N], int mask[N][N], string gemer, bool usemask)
+void map_show(int map[N][N], int mask[N][N], string gamer, bool usemask)
 {
-	cout << gemer << endl;
+	cout << gamer << endl;
 	cout << "  ";
 	for (int i = 0; i < N; i++)
 		cout << i << " ";
@@ -299,7 +299,7 @@ void array_filling(int ships[Num_Ships + 1])
 	}
 }
 // расстановка кораблей вручную
-void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_human[N][N])
+void manual_placement_of_ships(string& gamer, int map_human[N][N], int mask_human[N][N])
 {
 	int size_ship = 4;
 	int amount_ship = 0;
@@ -311,7 +311,7 @@ void manual_placement_of_ships(string& gemer, int map_human[N][N], int mask_huma
 	int temp_y = y;
 	int temp_dir = dir;
 	while (size_ship != 0) {
-		map_show(map_human, mask_human, gemer, 0);
+		map_show(map_human, mask_human, gamer, 0);
 		ship_show(x, y, dir, size_ship);
 		ch = _getch();
 		// изменить координаты или направление
@@ -405,8 +405,8 @@ int main()
 
 	shotResult resultshot = Slip; // попадание в корабль
 
-	string gemer = "Поле Игрока";
-	string gemer2 = "Поле Компьютера";
+	string gamer = "Поле Игрока";
+	string gamer2 = "Поле Компьютера";
 
 	bool turn = 1; // 1 ходит человек
 
@@ -417,7 +417,7 @@ int main()
 	array_filling(Ship_computer.ships_player);
 
 	// расстановка кораблей человека вручную
-	manual_placement_of_ships(gemer, Ship_human.map_player, Ship_human.mask_player);
+	manual_placement_of_ships(gamer, Ship_human.map_player, Ship_human.mask_player);
 
 	// расстановка кораблей бота рандомно
 	for (int i = 1; i <= Num_Ships; i++)
@@ -430,8 +430,8 @@ int main()
 			if (turn == 1) {
 				do {
 					system("cls");
-					map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
-					map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
+					map_show(Ship_human.map_player, Ship_human.mask_player, gamer, 0);
+					map_show(Ship_computer.map_player, Ship_computer.mask_player, gamer2, 1);
 					cout << "Введите кординаты цели: ";
 					cin >> Ship_human.x >> Ship_human.y;
 				} while (Ship_human.x > 9 && Ship_human.y > 9 && Ship_human.x < 0 && Ship_human.y < 0);
@@ -462,8 +462,8 @@ int main()
 			}
 			else {
 				system("cls");
-				map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
-				map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
+				map_show(Ship_human.map_player, Ship_human.mask_player, gamer, 0);
+				map_show(Ship_computer.map_player, Ship_computer.mask_player, gamer2, 1);
 				cout << "Ход компьютера: ";
 				Sleep(1000);
 
@@ -590,8 +590,8 @@ int main()
 		
 	}
 	system("cls");
-	map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
-	map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
+	map_show(Ship_human.map_player, Ship_human.mask_player, gamer, 0);
+	map_show(Ship_computer.map_player, Ship_computer.mask_player, gamer2, 1);
 	if (Ship_human.win_player) {
 		cout << "Вы победили" << endl;
 		Sleep(1000);
