@@ -14,6 +14,8 @@ int Ships[11] = { 0 };
 
 struct Player {
 
+	int x = 0; // кординаты цели
+	int y = 0; // кординаты цели
 	int dir = 0; // направление
 	int temp_dir = dir;
 
@@ -222,18 +224,18 @@ void map_show(int map[N][N], int mask[N][N], string gemer, bool usemask)
 	for (int i = 0; i < N; i++) {//прорисовка
 		cout << i;
 		for (int j = 0; j < N; j++) {
-			//if (mask[j][i] == 1 || usemask == 0) {
-			if (map[j][i] == 0)
-				cout << " -";
-			else if (map[j][i] == -1)
-				cout << " O";
-			else if (map[j][i] == -2)
-				cout << " *";
+			if (mask[j][i] == 1 || usemask == 0) {
+				if (map[j][i] == 0)
+					cout << " -";
+				else if (map[j][i] == -1)
+					cout << " O";
+				else if (map[j][i] == -2)
+					cout << " *";
+				else
+					cout << " X";
+			}
 			else
-				cout << " X";
-			//}
-			//else
-				//cout << "  ";
+				cout << " -";
 
 		}
 		cout << endl;
@@ -402,13 +404,11 @@ int main()
 {
 	SetConsoleOutputCP(CP_UTF8);
 
-	int x = 0, y = 0; // кординаты цели
-
-	int temp_x = x;
-	int temp_y = y;
-
 	Player Ship_human;
 	Player Ship_computer;
+
+	int temp_x = 0;
+	int temp_y = 0;
 
 	int mode = 0; // режим стрельбы
 	bool cheng_dir = 0;
@@ -432,7 +432,12 @@ int main()
 	array_filling(Ship_computer.ships_player);
 
 	// расстановка кораблей человека вручную
-	manual_placement_of_ships(gemer, Ship_human.map_player, Ship_human.mask_player);
+	//manual_placement_of_ships(gemer, Ship_human.map_player, Ship_human.mask_player);
+
+	// расстановка кораблей бота рандомно
+	for (int i = 1; i <= Num_Ships; i++)
+		set_rand_ships(Ship_human.map_player, Ship_human.ships_player[i], i);
+
 
 	// расстановка кораблей бота рандомно
 	for (int i = 1; i <= Num_Ships; i++)
@@ -442,19 +447,16 @@ int main()
 	while (Ship_computer.win_player == false && Ship_human.win_player == false) {
 		do {
 			
-			map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
-			map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
-
 			if (turn == 1) {
 				do {
-					cout << "Введите кординаты цели: ";
-					cin >> x >> y;
 					system("cls");
 					map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
 					map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
-				} while (x > 9 && y > 9 && x < 0 && y < 0);
+					cout << "Введите кординаты цели: ";
+					cin >> Ship_human.x >> Ship_human.y;
+				} while (Ship_human.x > 9 && Ship_human.y > 9 && Ship_human.x < 0 && Ship_human.y < 0);
 
-				resultshot = shot(Ship_computer.map_player, Ship_computer.mask_player, Ship_computer.ships_player, x, y);
+				resultshot = shot(Ship_computer.map_player, Ship_computer.mask_player, Ship_computer.ships_player, Ship_human.x, Ship_human.y);
 				if (resultshot == 2) {
 					cout << "Убил" << endl;
 
@@ -479,21 +481,24 @@ int main()
 				Sleep(1000);
 			}
 			else {
+				system("cls");
+				map_show(Ship_human.map_player, Ship_human.mask_player, gemer, 0);
+				map_show(Ship_computer.map_player, Ship_computer.mask_player, gemer2, 1);
 				cout << "Ход компьютера: ";
 				Sleep(1000);
 
 				// режим 1, когда алгоритм действует случаным образом 
 				if (mode == 0) {
 					do {
-					x = rand() % N;
-					y = rand() % N;
-					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, x, y);
+					Ship_computer.x = rand() % N;
+					Ship_computer.y = rand() % N;
+					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, Ship_computer.x, Ship_computer.y);
 					} while (resultshot == 3);
-					
+					cout << Ship_computer.x << " " << Ship_computer.y << endl;
 					if (resultshot == 1) {
 						mode = 1;
-						temp_x = x;
-						temp_y = y;
+						temp_x = Ship_computer.x;
+						temp_y = Ship_computer.y;
 						cout << "Ранен" << endl;
 
 					}
@@ -520,29 +525,29 @@ int main()
 					// блок 1 изменяе x пока не будет осуществлён промах или не упрётся в границу
 					// стрельба влево
 					if (Ship_computer.dir == 0) {
-						if (x > 0)
-							x--;
+						if (Ship_computer.x > 0)
+							Ship_computer.x--;
 						else
 							cheng_dir = 1;
 					}
 					// стрельба вправо
 					else if (Ship_computer.dir == 1) {
-						if (x < N - 1)
-							x++;
+						if (Ship_computer.x < N - 1)
+							Ship_computer.x++;
 						else
 							cheng_dir = 1;
 					}
 					// стрельба вверх
 					else if (Ship_computer.dir == 2) {
-						if (y > 0)
-							y--;
+						if (Ship_computer.y > 0)
+							Ship_computer.y--;
 						else
 							cheng_dir = 1;
 					}
 					// стрельба вниз
 					else if (Ship_computer.dir == 3) {
-						if (y < N - 1)
-							y++;
+						if (Ship_computer.y < N - 1)
+							Ship_computer.y++;
 						else
 							cheng_dir = 1;
 					}
@@ -553,13 +558,13 @@ int main()
 							Ship_computer.dir = dirs[dirs.size() - 1];
 							
 						}
-						x = temp_x;
-						y = temp_y;
+						Ship_computer.x = temp_x;
+						Ship_computer.y = temp_y;
 						cheng_dir = 0;
 						continue;
 
 					}
-					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, x, y);
+					resultshot = shot(Ship_human.map_player, Ship_human.mask_player, Ship_human.ships_player, Ship_computer.x, Ship_computer.y);
 					// блок 2 проверка состояния цели
 					if (resultshot == 1) {
 
@@ -586,21 +591,21 @@ int main()
 						Sleep(1000);
 					}
 					else {
-						Ship_human.map_player[x][y] = -2;
+						Ship_human.map_player[Ship_computer.x][Ship_computer.y] = -2;
 						if (!dirs.empty()) {
 							dirs.pop_back(); // удалить последний элемент
 							Ship_computer.dir = dirs[dirs.size() - 1];
 
 						}
-						x = temp_x;
-						y = temp_y;
+						Ship_computer.x = temp_x;
+						Ship_computer.y = temp_y;
 						cout << "Промах" << endl;
 						Sleep(1000);
 					}
 				}
 			}
 			system("cls");
-		} while (resultshot != 0);
+		} while (resultshot != 0 && resultshot != 3);
 		turn = turn == 0 ? 1 : 0;
 		
 	}
