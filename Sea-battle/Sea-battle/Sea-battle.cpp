@@ -55,7 +55,7 @@ void increase_x_y(int& x, int& y, int& dir)
 		break;
 	}
 }
-//проверка возможности постановки коробля
+//проверка возможности постановки корабля
 bool ship_position_check(int x, int y, int dir, int map[N][N], int size_ship)
 {
 	bool setting_is_possible = 1;
@@ -120,7 +120,7 @@ bool ship_position_check(int x, int y, int dir, int map[N][N], int size_ship)
 	}
 	return setting_is_possible;
 }
-// растановка коробля на поле
+// растановка корабля на поле
 void ship_show(int x, int y, int dir, int size_ship)
 {
 	for (int i = 0; i < size_ship; i++) {
@@ -160,7 +160,7 @@ bool ship_in_map(int x, int y, int dir, int size_ship)
 	}
 	return in_map;
 }
-//проверка возможности постановки коробля при ручной постанки
+//проверка возможности постановки корабля при ручной постанки
 bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
 	int temp_x = x;
 	int temp_y = y;
@@ -182,7 +182,7 @@ bool set_ship(int map[N][N], int x, int y, int dir, int size_ship) {
 
 	return setting_is_possible;
 }
-// рандомная расстановка короблей
+// рандомная расстановка кораблей
 void set_rand_ships(int map[N][N], int size_ship, int ships_id)
 {
 	int x, y;
@@ -261,7 +261,7 @@ int shot(int map[N][N], int mask[N][N], int ships[Num_Ships + 1], int x, int y)
 	mask[x][y] = 1;
 	return result;
 }
-// заполнение массива с короблями
+// заполнение массива с кораблями
 void array_filling(int ships[Num_Ships + 1])
 {
 	int amount_ship = 0;
